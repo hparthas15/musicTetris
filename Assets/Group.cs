@@ -4,8 +4,9 @@ using UnityEngine;
 
 public class Group : MonoBehaviour
 {
-            float lastFall = 0;
-
+    float lastFall = 0;
+    float beatTime = 1;
+    public Vector3 rotationPoint;
     // Start is called before the first frame update
     void Start()
     {
@@ -39,14 +40,16 @@ public class Group : MonoBehaviour
         }
         else if (Input.GetKeyDown(KeyCode.UpArrow)) {
             // Modify Rotation
-            transform.Rotate(0, 0, -90);
+            transform.RotateAround(transform.TransformPoint(rotationPoint), new Vector3(0,0,1), -90);
+
+            //transform.Rotate(0, 0, -90, Space.Self);
             // Check Validity
             if (isValidGridPos())
                 updateGrid();
             else
-                transform.Rotate(0, 0, 90);
+            transform.RotateAround(transform.TransformPoint(rotationPoint), new Vector3(0,0,1), 90);
         }
-        else if (Input.GetKeyDown(KeyCode.DownArrow) || Time.time - lastFall >= 1) {
+        else if (Input.GetKeyDown(KeyCode.DownArrow) || Time.time - lastFall > beatTime) {
             // Modify Position
             transform.position += new Vector3(0, -1, 0);
             // Check Validity
